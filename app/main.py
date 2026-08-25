@@ -29,8 +29,7 @@ app.add_middleware(
 # Mount static directory and Jinja2 templates
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
-# Fix for Jinja2 caching issue: pass empty globals to avoid unhashable type error
-templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"), globals={})
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # Register API Routers
 app.include_router(auth.router)
