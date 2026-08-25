@@ -1,7 +1,6 @@
 import os
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -26,10 +25,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static directory and Jinja2 templates
+# Mount static directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
-templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # Register API Routers
 app.include_router(auth.router)
@@ -39,4 +37,13 @@ app.include_router(dashboard.router)
 
 @app.get("/", response_class=HTMLResponse)
 def root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    # Serve the HTML template directly to avoid Jinja2 template caching issues
+    template_path = os.path.join(BASE_DIR, "templates", "index.html")
+    try:
+        with open(template_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        return HTMLResponse(content=content, status_code=200)
+    except FileNotFoundError:
+        return HTMLResponse(content="<h1>Template not found</h1>", status_code=404)
+    except Exception as e:
+        return HTMLResponse(content=f"<h1>Error loading template: {str(e)}</h1>", status_code=500)
