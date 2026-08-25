@@ -61,6 +61,7 @@ def init_db():
     conn.commit()
     # Seed demo data if tables are empty
     seed_demo_data_if_empty(cursor)
+    conn.commit()  # Commit the seeded data
     conn.close()
 
 def seed_demo_data_if_empty(cursor):
