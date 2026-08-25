@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevHub Workspace - Full-Stack Knowledge Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased">
+
+  <!-- TOP NAVBAR -->
+  <header class="bg-slate-800/90 backdrop-blur border-b border-slate-700/60 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-indigo-600 text-white p-2 rounded-lg shadow-lg shadow-indigo-500/20">
+          <i class="fa-solid fa-code text-xl"></i>
+        </div>
+        <div>
+          <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 via-sky-400 to-emerald-400 bg-clip-text text-transparent">DevHub</span>
+          <span class="text-xs bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full ml-2 font-mono">v1.0</span>
+        </div>
+      </div>
+
+      <!-- Auth Header Info / Buttons -->
+      <div id="nav-user-area" class="hidden flex items-center space-x-4">
+        <button id="btn-open-create-modal" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg font-medium text-sm transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> New Snippet
+        </button>
+        <div class="h-6 w-px bg-slate-700"></div>
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center font-bold text-indigo-400 text-sm" id="user-avatar">
+            U
+          </div>
+          <div class="text-xs text-left hidden sm:block">
+            <div id="user-display-name" class="font-semibold text-slate-200">User Name</div>
+            <div id="user-display-role" class="text-slate-400 font-mono">Developer</div>
+          </div>
+        </div>
+        <button id="btn-logout" class="text-slate-400 hover:text-red-400 text-sm p-2 rounded-lg transition-colors" title="Logout">
+          <i class="fa-solid fa-right-from-bracket text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- AUTHENTICATION VIEW (Logged Out) -->
+    <div id="view-auth" class="max-w-md mx-auto my-12">
+      <div class="glass-card rounded-2xl p-8 border border-slate-700/80 shadow-2xl">
+        <div class="text-center mb-6">
+          <h2 id="auth-title" class="text-2xl font-bold text-slate-100">Welcome to DevHub</h2>
+          <p id="auth-subtitle" class="text-slate-400 text-sm mt-1">Sign in to manage your snippets & code knowledge base</p>
+        </div>
+
+        <!-- Auth Tabs -->
+        <div class="flex border-b border-slate-700 mb-6">
+          <button id="tab-auth-login" class="flex-1 pb-3 text-center text-sm font-semibold text-indigo-400 border-b-2 border-indigo-500 transition-colors">
+            Sign In
+          </button>
+          <button id="tab-auth-register" class="flex-1 pb-3 text-center text-sm font-semibold text-slate-400 border-b-2 border-transparent hover:text-slate-200 transition-colors">
+            Register
+          </button>
+        </div>
+
+        <!-- Alert Banner -->
+        <div id="auth-error-alert" class="hidden mb-4 p-3 bg-red-900/50 border border-red-500/50 rounded-lg text-red-200 text-sm"></div>
+
+        <!-- Login Form -->
+        <form id="form-login" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Email Address</label>
+            <input type="email" id="login-email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-indigo-500 transition-colors" placeholder="developer@company.com">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Password</label>
+            <input type="password" id="login-password" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-indigo-500 transition-colors" placeholder="••••••••">
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-lg text-sm transition-all shadow-lg shadow-indigo-600/30">
+            Sign In
+          </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="form-register" class="space-y-4 hidden">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Full Name</label>
+            <input type="text" id="reg-fullname" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500" placeholder="Harsh Gautam">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Username</label>
+            <input type="text" id="reg-username" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500" placeholder="harsh_dev">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Email Address</label>
+            <input type="email" id="reg-email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500" placeholder="harsh@example.com">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Password</label>
+            <input type="password" id="reg-password" required minlength="6" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500" placeholder="At least 6 characters">
+          </div>
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-lg text-sm transition-all shadow-lg shadow-emerald-600/30">
+            Create Account
+          </button>
+        </form>
+
+        <!-- Demo Account Banner -->
+        <div class="mt-6 pt-6 border-t border-slate-800 text-xs text-slate-400">
+          <p class="font-semibold text-slate-300 mb-2">🔑 Demo Login Credentials:</p>
+          <div class="space-y-1 font-mono bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+            <div><span class="text-indigo-400">Admin:</span> admin@devhub.com | password123</div>
+            <div><span class="text-sky-400">Dev:</span> dev@devhub.com | password123</div>
+            <div><span class="text-emerald-400">User:</span> member@devhub.com | password123</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN APP DASHBOARD VIEW (Logged In) -->
+    <div id="view-app" class="hidden space-y-8">
+
+      <!-- STATS METRICS GRID -->
+      <div id="stats-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Card 1 -->
+        <div class="glass-card rounded-xl p-5 border border-slate-800 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Snippets</div>
+            <div id="stat-total-snippets" class="text-2xl font-bold text-slate-100 mt-1">0</div>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-code"></i>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="glass-card rounded-xl p-5 border border-slate-800 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">My Snippets</div>
+            <div id="stat-my-snippets" class="text-2xl font-bold text-sky-400 mt-1">0</div>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="glass-card rounded-xl p-5 border border-slate-800 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Saved Bookmarks</div>
+            <div id="stat-my-bookmarks" class="text-2xl font-bold text-amber-400 mt-1">0</div>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-bookmark"></i>
+          </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="glass-card rounded-xl p-5 border border-slate-800 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Views</div>
+            <div id="stat-total-views" class="text-2xl font-bold text-emerald-400 mt-1">0</div>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-eye"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & SEARCH BAR -->
+      <div class="glass-card rounded-xl p-4 border border-slate-800 flex flex-col md:flex-row gap-4 justify-between items-center">
+        <!-- Filter Tabs -->
+        <div class="flex items-center bg-slate-900 p-1 rounded-lg border border-slate-800 w-full md:w-auto">
+          <button id="tab-filter-all" class="px-4 py-1.5 rounded-md text-xs font-semibold text-indigo-400 bg-slate-800 transition-all flex-1 md:flex-none">
+            All Snippets
+          </button>
+          <button id="tab-filter-mine" class="px-4 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all flex-1 md:flex-none">
+            My Snippets
+          </button>
+          <button id="tab-filter-bookmarks" class="px-4 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all flex-1 md:flex-none">
+            Bookmarks
+          </button>
+        </div>
+
+        <!-- Controls: Search Input & Language Select -->
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-grow max-w-xl">
+          <div class="relative flex-grow">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+            <input type="text" id="search-input" placeholder="Search by title, description, or tags..." class="w-full bg-slate-900 border border-slate-800 text-slate-200 pl-9 pr-4 py-1.5 rounded-lg text-xs focus:outline-none focus:border-indigo-500 transition-colors">
+          </div>
+          <select id="language-filter" class="bg-slate-900 border border-slate-800 text-slate-200 px-3 py-1.5 rounded-lg text-xs focus:outline-none focus:border-indigo-500">
+            <option value="">All Languages</option>
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="sql">SQL</option>
+            <option value="docker">Docker</option>
+            <option value="bash">Bash</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SNIPPETS LIST GRID -->
+      <div id="snippets-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Dynamically Populated via app.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: CREATE / EDIT SNIPPET -->
+  <div id="modal-snippet" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="glass-card bg-slate-800 rounded-2xl max-w-2xl w-full border border-slate-700 shadow-2xl p-6 relative space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-700/80 pb-3">
+        <h3 id="modal-snippet-title" class="text-lg font-bold text-slate-100">Create New Snippet</h3>
+        <button id="btn-close-snippet-modal" class="text-slate-400 hover:text-slate-200 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="modal-error-alert" class="hidden p-3 bg-red-900/50 border border-red-500/50 rounded-lg text-red-200 text-xs"></div>
+
+      <form id="form-snippet" class="space-y-4">
+        <input type="hidden" id="snippet-edit-id" value="">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Title *</label>
+            <input type="text" id="snippet-title-input" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500" placeholder="e.g. JWT Auth Middleware in FastAPI">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Language *</label>
+            <select id="snippet-language-input" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
+              <option value="python">Python</option>
+              <option value="javascript">JavaScript</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="sql">SQL</option>
+              <option value="docker">Docker</option>
+              <option value="bash">Bash</option>
+              <option value="cpp">C++</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Description</label>
+          <input type="text" id="snippet-desc-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500" placeholder="Brief explanation of what this code does...">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Code Content *</label>
+          <textarea id="snippet-code-input" required rows="7" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs font-mono text-emerald-400 focus:outline-none focus:border-indigo-500" placeholder="# Paste your source code here..."></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Tags (Comma-separated)</label>
+            <input type="text" id="snippet-tags-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500" placeholder="fastapi, jwt, auth, python">
+          </div>
+          <div class="flex items-center space-x-2 pt-4 sm:pt-0">
+            <input type="checkbox" id="snippet-private-input" class="w-4 h-4 text-indigo-600 bg-slate-900 border-slate-700 rounded focus:ring-indigo-500">
+            <label for="snippet-private-input" class="text-xs text-slate-300 font-medium">Make Private (Only visible to you)</label>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-3 border-t border-slate-700/80">
+          <button type="button" id="btn-cancel-snippet-modal" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg transition-colors">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow-lg shadow-indigo-600/30 transition-all">
+            Save Snippet
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- Client JavaScript -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
