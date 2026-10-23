@@ -158,25 +158,6 @@ http://127.0.0.1:8000
 
 ---
 
-## 🌐 Deploying to Vercel
-
-DevHub Workspace is deployed and running live on Vercel:
-
-- **Production URL**: [https://devhub-workspace.vercel.app](https://devhub-workspace.vercel.app)
-- **Health Check Endpoint**: [https://devhub-workspace.vercel.app/api/health](https://devhub-workspace.vercel.app/api/health)
-
-To deploy updates:
-
-```bash
-# Link project to Vercel
-vercel link --yes
-
-# Deploy to Production
-vercel --prod
-```
-
----
-
 ## 🧪 Running Unit Tests
 
 Run the automated test suite covering all security, CRUD, and access control behaviors:
