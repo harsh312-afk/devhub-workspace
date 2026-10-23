@@ -79,7 +79,7 @@
         <div id="auth-error-alert" class="hidden mb-4 p-3 bg-red-900/50 border border-red-500/50 rounded-lg text-red-200 text-sm"></div>
 
         <!-- Login Form -->
-        <form id="form-login" class="space-y-4">
+        <form id="form-login" onsubmit="return false;" class="space-y-4">
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Email Address</label>
             <input type="email" id="login-email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-indigo-500 transition-colors" placeholder="developer@company.com">
@@ -94,7 +94,7 @@
         </form>
 
         <!-- Register Form -->
-        <form id="form-register" class="space-y-4 hidden">
+        <form id="form-register" onsubmit="return false;" class="space-y-4 hidden">
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Full Name</label>
             <input type="text" id="reg-fullname" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500" placeholder="Harsh Gautam">
@@ -325,7 +325,7 @@
 
       <div id="modal-error-alert" class="hidden p-3 bg-red-900/50 border border-red-500/50 rounded-lg text-red-200 text-xs"></div>
 
-      <form id="form-snippet" class="space-y-4">
+      <form id="form-snippet" onsubmit="return false;" class="space-y-4">
         <input type="hidden" id="snippet-edit-id" value="">
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

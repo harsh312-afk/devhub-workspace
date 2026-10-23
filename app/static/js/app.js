@@ -60,7 +60,14 @@ async function apiFetch(url, options = {}) {
   }
   options.headers["Content-Type"] = "application/json";
 
-  const response = await fetch(url, options);
+  let response;
+  try {
+    response = await fetch(url, options);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    throw new Error(err.message || "Network connection issue. Please try again.");
+  }
+
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
@@ -168,11 +175,24 @@ function setupEventListeners() {
 const debounceLoadSnippets = debounce(() => loadSnippets(), 300);
 
 async function handleLoginSubmit(e) {
-  e.preventDefault();
+  if (e && e.preventDefault) e.preventDefault();
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value;
+  await performLogin(email, password);
+  return false;
+}
+
+async function performLogin(email, password) {
   const alert = document.getElementById("auth-error-alert");
+  const submitBtn = document.getElementById("btn-submit-login");
   alert.classList.add("hidden");
+
+  let origText = "Sign In";
+  if (submitBtn) {
+    origText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Signing In...</span>`;
+  }
 
   try {
     const data = await apiFetch("/api/auth/login", {
@@ -182,19 +202,37 @@ async function handleLoginSubmit(e) {
 
     onAuthSuccess(data, "Signed in successfully!");
   } catch (err) {
-    alert.textContent = err.message;
+    alert.textContent = err.message || "Failed to sign in. Please try again.";
     alert.classList.remove("hidden");
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = origText;
+    }
   }
 }
 
 async function handleRegisterSubmit(e) {
-  e.preventDefault();
+  if (e && e.preventDefault) e.preventDefault();
   const full_name = document.getElementById("reg-fullname").value.trim();
   const username = document.getElementById("reg-username").value.trim();
   const email = document.getElementById("reg-email").value.trim();
   const password = document.getElementById("reg-password").value;
+  await performRegister(full_name, username, email, password);
+  return false;
+}
+
+async function performRegister(full_name, username, email, password) {
   const alert = document.getElementById("auth-error-alert");
+  const submitBtn = document.getElementById("btn-submit-register");
   alert.classList.add("hidden");
+
+  let origText = "Create Account";
+  if (submitBtn) {
+    origText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Creating Account...</span>`;
+  }
 
   try {
     const data = await apiFetch("/api/auth/register", {
@@ -204,8 +242,13 @@ async function handleRegisterSubmit(e) {
 
     onAuthSuccess(data, "Account created successfully!");
   } catch (err) {
-    alert.textContent = err.message;
+    alert.textContent = err.message || "Failed to create account. Please try again.";
     alert.classList.remove("hidden");
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = origText;
+    }
   }
 }
 
@@ -232,7 +275,7 @@ function quickDemoLogin(email, password) {
   switchAuthTab("login");
   document.getElementById("login-email").value = email;
   document.getElementById("login-password").value = password;
-  document.getElementById("form-login").dispatchEvent(new Event("submit"));
+  performLogin(email, password);
 }
 
 function switchAuthTab(type) {
