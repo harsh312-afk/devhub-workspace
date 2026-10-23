@@ -1,5 +1,12 @@
 # DevHub Workspace - Intermediate Full-Stack Web Application
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-devhub--workspace.vercel.app-6366f1?style=for-the-badge&logo=vercel)](https://devhub-workspace.vercel.app)
+[![API Health](https://img.shields.io/badge/Health_Check-Passing-emerald?style=for-the-badge)](https://devhub-workspace.vercel.app/api/health)
+[![GitHub](https://img.shields.io/badge/GitHub-harsh312--afk%2Fdevhub--workspace-181717?style=for-the-badge&logo=github)](https://github.com/harsh312-afk/devhub-workspace)
+
+> 🌐 **Live Production App:** [https://devhub-workspace.vercel.app](https://devhub-workspace.vercel.app)  
+> 🏥 **API Health Check:** [https://devhub-workspace.vercel.app/api/health](https://devhub-workspace.vercel.app/api/health)
+
 **DevHub Workspace** is an enterprise-ready, intermediate-level full-stack developer knowledge hub and code snippet management platform. Built using **FastAPI**, **SQLite3**, **Tailwind CSS**, and **Vanilla JavaScript ES6**, this single-page application (SPA) allows developers and teams to create, organize, bookmark, search, fork, download, and manage code snippets with secure token-based authentication and role-based access control (RBAC).
 
 ---
@@ -153,7 +160,12 @@ http://127.0.0.1:8000
 
 ## 🌐 Deploying to Vercel
 
-DevHub Workspace includes native configuration for Vercel deployment:
+DevHub Workspace is deployed and running live on Vercel:
+
+- **Production URL**: [https://devhub-workspace.vercel.app](https://devhub-workspace.vercel.app)
+- **Health Check Endpoint**: [https://devhub-workspace.vercel.app/api/health](https://devhub-workspace.vercel.app/api/health)
+
+To deploy updates:
 
 ```bash
 # Link project to Vercel
