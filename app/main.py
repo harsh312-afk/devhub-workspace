@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import init_db
@@ -13,7 +13,7 @@ init_db()
 app = FastAPI(
     title="DevHub Workspace API",
     description="Full-stack Developer Knowledge Hub & Snippet Management Platform",
-    version="1.0.0"
+    version="1.1.0"
 )
 
 # Enable CORS for flexible integration
@@ -35,9 +35,16 @@ app.include_router(snippets.router)
 app.include_router(bookmarks.router)
 app.include_router(dashboard.router)
 
+@app.get("/api/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "DevHub Workspace",
+        "version": "1.1.0"
+    }
+
 @app.get("/", response_class=HTMLResponse)
 def root(request: Request):
-    # Serve the HTML template directly to avoid Jinja2 template caching issues
     template_path = os.path.join(BASE_DIR, "templates", "index.html")
     try:
         with open(template_path, "r", encoding="utf-8") as f:

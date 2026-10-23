@@ -1,8 +1,10 @@
+import logging
 from fastapi import APIRouter, HTTPException, status, Depends
 from app.database import get_db_connection
 from app.auth import verify_password, hash_password, create_access_token, get_current_user
 from app.schemas import RegisterRequest, LoginRequest, TokenResponse, UserResponse
 
+logger = logging.getLogger("devhub.auth")
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=TokenResponse)
@@ -17,7 +19,13 @@ def register(user_data: RegisterRequest):
         raise HTTPException(status_code=400, detail="Username or Email already registered")
 
     hashed_pwd = hash_password(user_data.password)
-    role_flag = user_data.role if user_data.role in ['Admin', 'Developer', 'Member'] else 'Developer'
+    
+    # Restrict public self-registration to Developer or Member to prevent privilege escalation
+    role_requested = (user_data.role or "Developer").strip()
+    if role_requested.lower() == "member":
+        role_flag = "Member"
+    else:
+        role_flag = "Developer"
 
     cursor.execute("""
         INSERT INTO users (username, email, hashed_password, full_name, role)
@@ -54,17 +62,6 @@ def login(credentials: LoginRequest):
 
     cursor.execute("SELECT * FROM users WHERE email = ?", (credentials.email,))
     user = cursor.fetchone()
-
-    # Debug logging to help troubleshoot login issues
-    if not user:
-        print(f"LOGIN DEBUG: No user found for email: {credentials.email}")
-    else:
-        print(f"LOGIN DEBUG: User found for email: {credentials.email}, checking password...")
-        password_match = verify_password(credentials.password, user["hashed_password"])
-        print(f"LOGIN DEBUG: Password match result: {password_match}")
-        if not password_match:
-            print(f"LOGIN DEBUG: Password verification failed for email: {credentials.email}")
-
     conn.close()
 
     if not user or not verify_password(credentials.password, user["hashed_password"]):

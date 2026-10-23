@@ -37,11 +37,16 @@ code, pre {
 .lang-docker { background-color: #075985; color: #e0f2fe; }
 .lang-bash { background-color: #374151; color: #e5e7eb; }
 .lang-cpp { background-color: #831843; color: #fbcfe8; }
+.lang-rust { background-color: #7c2d12; color: #fed7aa; }
+.lang-go { background-color: #0e7490; color: #bae6fd; }
+.lang-json { background-color: #4338ca; color: #c7d2fe; }
+.lang-yaml { background-color: #701a75; color: #f5d0fe; }
 
 /* Custom Glassmorphism Cards */
 .glass-card {
   background: rgba(30, 41, 59, 0.7);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -53,4 +58,17 @@ code, pre {
 .modal-overlay {
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Prism overrides for dark mode */
+pre[class*="language-"] {
+  background: #090d16 !important;
+  margin: 0 !important;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+code[class*="language-"] {
+  font-family: 'Fira Code', monospace !important;
+  font-size: 0.8rem !important;
+  line-height: 1.5 !important;
 }
